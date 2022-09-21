@@ -2,25 +2,32 @@ import React, { useState, useRef } from "react";
 import CustomButton from "./UI/button/CustomButton";
 import CustomInput from "./UI/input/CustomInput";
 
-const NewPostForm = () => {
-  const [title, setTitle] = useState("");
-  const textInputRef = useRef();
+const NewPostForm = ({ create }) => {
+  const [post, setPost] = useState({ title: "", body: "" });
 
   const addNewPost = (e) => {
-    e.preventDefault();
-    console.log(title);
-    console.log(textInputRef.current.value);
+    const newPost = {
+      ...post,
+      id: Date.now(),
+    };
+    create(newPost);
+    setPost({ title: "", body: "" });
   };
 
   return (
     <div>
       <CustomInput
-        value={title}
-        onChange={(e) => setTitle(e.target.value)}
+        value={post.title}
+        onChange={(e) => setPost({ ...post, title: e.target.value })}
         type="text"
         placeholder="Enter title..."
       />
-      <CustomInput ref={textInputRef} type="text" placeholder="Enter text..." />
+      <CustomInput
+        value={post.body}
+        type="text"
+        onChange={(e) => setPost({ ...post, body: e.target.value })}
+        placeholder="Enter text..."
+      />
       <CustomButton onClick={addNewPost}>Create</CustomButton>
     </div>
   );
