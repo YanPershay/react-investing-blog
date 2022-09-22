@@ -1,8 +1,9 @@
 .customBtn {
-    padding: 5px 15px;
-    background: transparent;
-    color: rgb(28, 29, 29);
-    font-size: 14px;
-    cursor: pointer;
-    font-size: 14px;
+  padding: 5px 15px;
+  background: rgb(71, 70, 70);
+  color: rgb(255, 255, 255);
+  font-size: 14px;
+  cursor: pointer;
+  font-size: 14px;
+  border-radius: 8px;
 }
