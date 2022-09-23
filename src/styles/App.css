@@ -1,24 +1,25 @@
 * {
-    margin:0 ;
-    padding: 0;
-    box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 #root {
-    display: flex;
-    justify-content: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .App {
-    width: 800px;;
+  width: 800px;
 }
 
 h1 {
-    text-align: center;
+  text-align: center;
 }
 
 .spinner {
-    display: flex;
-    justify-content: center;
-    margin-top: 50px;
+  display: flex;
+  justify-content: center;
+  margin-top: 50px;
 }

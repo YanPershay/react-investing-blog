@@ -1,0 +1,9 @@
+h1 {
+    text-align: center;
+}
+
+.spinner {
+    display: flex;
+    justify-content: center;
+    margin-top: 50px;
+}
