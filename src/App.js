@@ -8,27 +8,29 @@ import { usePosts } from "./hooks/usePosts";
 import PostService from "./api/PostService";
 import "./styles/App.css";
 import Spinner from "./components/UI/spinner/Spinner";
+import { useFetching } from "./hooks/useFetching";
+import { getPagesArray, getPagesCount } from "./utils/pages";
+import Pagination from "./components/UI/pagination/Pagination";
 
 function App() {
   const [posts, setPosts] = useState("");
   const [filter, setFilter] = useState({ sort: "", query: "" });
   const [modal, setModal] = useState(false);
-  const [isLoading, setLoading] = useState("false");
+  const [totalPages, setTotalPages] = useState(0);
+  const [limit, setLimit] = useState(10);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [fetchPosts, isLoading, error] = useFetching(async () => {
+    const response = await PostService.getPosts(limit, currentPage);
+    setPosts(response.data);
+    const totalCount = response.headers["x-total-count"];
+    setTotalPages(getPagesCount(totalCount, limit));
+  });
 
   const searchedAndSortedPosts = usePosts(posts, filter.sort, filter.query);
 
   useEffect(() => {
     fetchPosts();
-  }, []);
-
-  async function fetchPosts() {
-    setLoading(true);
-    setTimeout(async () => {
-      const posts = await PostService.getPosts();
-      setPosts(posts);
-      setLoading(false);
-    }, 1000);
-  }
+  }, [currentPage]);
 
   const createPost = (newPost) => {
     setPosts([...posts, newPost]);
@@ -43,6 +45,11 @@ function App() {
     setModal(true);
   };
 
+  const changePage = (page) => {
+    setCurrentPage(page);
+    fetchPosts();
+  };
+
   return (
     <div className="App">
       {/* TODO: add necessary margins */}
@@ -51,8 +58,11 @@ function App() {
         <NewPostForm create={createPost} />
       </ModalWindow>
       <PostsFilter filter={filter} setFilter={setFilter} />
+      {error && <h1>An error has occured: ${error}</h1>}
       {isLoading ? (
-        <div className="spinner"><Spinner/></div>
+        <div className="spinner">
+          <Spinner />
+        </div>
       ) : (
         <PostsList
           remove={removePost}
@@ -60,6 +70,11 @@ function App() {
           posts={searchedAndSortedPosts}
         />
       )}
+      <Pagination
+        currentPage={currentPage}
+        changePage={changePage}
+        totalPages={totalPages}
+      />
     </div>
   );
 }

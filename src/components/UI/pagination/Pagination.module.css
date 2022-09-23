@@ -1,0 +1,15 @@
+.pages {
+    margin-top: 30px;
+    display: flex;
+}
+
+.page {
+    padding: 10px;
+    border: 1px solid blue;
+    cursor: pointer;
+}
+
+.activePage {
+    border: 3px solid rgb(5, 130, 7);
+    font-weight: bold;
+}
