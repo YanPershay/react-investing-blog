@@ -1,11 +1,18 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Route, Routes, Navigate } from "react-router-dom";
+import { AuthContext } from "../context/appContext.js";
 import Error from "../pages/Error";
 import { privateRoutes, publicRoutes } from "../router/routes";
+import Spinner from "./UI/spinner/Spinner.jsx";
 
 const AppRouter = () => {
-  const isAuthorised = true;
-  return isAuthorised ? (
+  const { isAuth, isLoading } = useContext(AuthContext);
+
+  if (isLoading) {
+    return <Spinner />;
+  }
+
+  return isAuth ? (
     <Routes>
       {privateRoutes.map((route) => (
         <Route
@@ -29,8 +36,7 @@ const AppRouter = () => {
           key={route.path}
         />
       ))}
-      <Route path="*" element={<Error />} />
-      <Route path="/" element={<Navigate replace to="/login" />} />
+      <Route path="*" element={<Navigate replace to="/login" />} />
     </Routes>
   );
 };

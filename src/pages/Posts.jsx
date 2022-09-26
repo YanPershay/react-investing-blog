@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import NewPostForm from "../components/NewPostForm";
 import PostsFilter from "../components/PostsFilter";
 import PostsList from "../components/PostsList";
@@ -11,6 +11,8 @@ import Spinner from "../components/UI/spinner/Spinner";
 import { useFetching } from "../hooks/useFetching";
 import { getPagesCount } from "../utils/pages";
 import Pagination from "../components/UI/pagination/Pagination";
+import { useObserver } from "../hooks/useObserver";
+import CustomSelect from "../components/UI/select/CustomSelect";
 
 function Posts() {
   const [posts, setPosts] = useState("");
@@ -21,16 +23,23 @@ function Posts() {
   const [currentPage, setCurrentPage] = useState(1);
   const [fetchPosts, isLoading, error] = useFetching(async () => {
     const response = await PostService.getPosts(limit, currentPage);
-    setPosts(response.data);
+    setPosts([...posts, ...response.data]);
     const totalCount = response.headers["x-total-count"];
     setTotalPages(getPagesCount(totalCount, limit));
   });
+  const lastElement = useRef();
 
   const searchedAndSortedPosts = usePosts(posts, filter.sort, filter.query);
 
+  const canLoadPosts = currentPage < totalPages;
+
+  useObserver(lastElement, canLoadPosts, isLoading, () => {
+    setCurrentPage(currentPage + 1);
+  });
+
   useEffect(() => {
-    fetchPosts();
-  }, [currentPage]);
+    fetchPosts(limit, currentPage);
+  }, [currentPage, limit]);
 
   const createPost = (newPost) => {
     setPosts([...posts, newPost]);
@@ -58,17 +67,28 @@ function Posts() {
         <NewPostForm create={createPost} />
       </ModalWindow>
       <PostsFilter filter={filter} setFilter={setFilter} />
+      <CustomSelect
+        value={limit}
+        onChange={(value) => setLimit(value)}
+        defaultOption="Number of items per page"
+        options={[
+          { value: 5, name: "5" },
+          { value: 10, name: "10" },
+          { value: 20, name: "20" },
+          { value: -1, name: "All" },
+        ]}
+      />
       {error && <h1>An error has occured: ${error}</h1>}
-      {isLoading ? (
+      <PostsList
+        remove={removePost}
+        title={"Main news"}
+        posts={searchedAndSortedPosts}
+      />
+      <div ref={lastElement} style={{ height: 20, background: "red" }}></div>
+      {isLoading && (
         <div className="spinner">
           <Spinner />
         </div>
-      ) : (
-        <PostsList
-          remove={removePost}
-          title={"Main news"}
-          posts={searchedAndSortedPosts}
-        />
       )}
       <Pagination
         currentPage={currentPage}
