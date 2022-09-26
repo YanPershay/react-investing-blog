@@ -62,12 +62,15 @@ function Posts() {
   return (
     <div className="App">
       {/* TODO: add necessary margins */}
-      <CustomButton onClick={openModal}>Create new post</CustomButton>
+      <div className="createPostBtn">
+        <CustomButton onClick={openModal}>Create new post</CustomButton>
+      </div>
       <ModalWindow visibility={modal} setVisibility={setModal}>
         <NewPostForm create={createPost} />
       </ModalWindow>
       <PostsFilter filter={filter} setFilter={setFilter} />
-      <CustomSelect
+      {/* Select to select the number of posts to load */}
+      {/* <CustomSelect
         value={limit}
         onChange={(value) => setLimit(value)}
         defaultOption="Number of items per page"
@@ -77,7 +80,7 @@ function Posts() {
           { value: 20, name: "20" },
           { value: -1, name: "All" },
         ]}
-      />
+      /> */}
       {error && <h1>An error has occured: ${error}</h1>}
       <PostsList
         remove={removePost}

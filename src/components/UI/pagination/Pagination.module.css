@@ -1,15 +1,21 @@
 .pages {
-    margin-top: 30px;
-    display: flex;
+  margin-top: 30px;
+  display: -ms-flexbox;
+  display: inline-flex;
+  max-width: 1200px;
+  -ms-flex-pack: distribute;
+  justify-content: space-around;
+  margin: 40px auto;
+  flex-wrap: wrap;
 }
 
 .page {
-    padding: 10px;
-    border: 1px solid blue;
-    cursor: pointer;
+  padding: 10px;
+  border: 1px solid blue;
+  cursor: pointer;
 }
 
 .activePage {
-    border: 3px solid rgb(5, 130, 7);
-    font-weight: bold;
+  border: 3px solid rgb(5, 130, 7);
+  font-weight: bold;
 }

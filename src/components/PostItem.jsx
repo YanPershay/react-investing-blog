@@ -7,7 +7,7 @@ const PostItem = (props) => {
   const navigate = useNavigate()
   return (
     <div className="post">
-      <div className="post-content">
+      <div>
         <strong>
           {props.post.id}. {props.post.title}
         </strong>

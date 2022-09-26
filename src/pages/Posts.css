@@ -7,3 +7,8 @@ h1 {
     justify-content: center;
     margin-top: 50px;
 }
+
+.createPostBtn {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}

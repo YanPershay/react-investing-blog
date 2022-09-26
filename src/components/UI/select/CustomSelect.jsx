@@ -1,4 +1,5 @@
 import React from "react";
+import './CustomSelect.css'
 
 const CustomSelect = ({ options, defaultOption, value, onChange }) => {
   return (

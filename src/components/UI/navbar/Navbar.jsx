@@ -15,11 +15,12 @@ const Navbar = () => {
     isAuth && (
       <div className={classes.navbar}>
         <div className={classes.navbarLinks}>
-          <Link to="/posts">Posts </Link>
-          <Link to="/about">About </Link>
+          <Link to="/posts">Posts | </Link>
+          <Link to="/photos">Photos | </Link>
+          <Link to="/about">About | </Link>
 
           <Link to="/login" onClick={logout}>
-            Log out
+            Log out |
           </Link>
         </div>
       </div>
